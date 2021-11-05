@@ -7,9 +7,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Component;
+
 import com.soneghett.food.delivery.domain.model.Kitchen;
 import com.soneghett.food.delivery.domain.repository.KitchenRepository;
 
+@Component
 public class KitchenRepositoryImpl implements KitchenRepository {
 
 	@PersistenceContext
@@ -35,7 +39,13 @@ public class KitchenRepositoryImpl implements KitchenRepository {
 
 	@Override
 	@Transactional
-	public void remove(Kitchen kitchen) {
+	public void remove(Long id) {
+		Kitchen kitchen = findById(id);
+
+		if (kitchen == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+
 		em.remove(kitchen);
 	}
 

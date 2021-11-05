@@ -1,7 +1,6 @@
 package com.soneghett.food.delivery.domain.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,17 +22,8 @@ public class Restaurant {
 	@Column(name = "TX_FREIGHT", nullable = false)
 	private BigDecimal freightTax;
 
-	@Column(name = "ST_OPEN")
-	private boolean open;
-
-	@Column(name = "DT_REGISTER")
-	private Date registerDate;
-
-	@Column(name = "DT_UPDATE")
-	private Date update;
-
-	@JoinColumn(name = "ID_KITCHEN")
 	@ManyToOne
+	@JoinColumn(name = "ID_KITCHEN", nullable = false)
 	private Kitchen kitchen;
 
 	public Long getId() {
@@ -60,28 +50,12 @@ public class Restaurant {
 		this.freightTax = freightTax;
 	}
 
-	public boolean isOpen() {
-		return open;
+	public Kitchen getKitchen() {
+		return kitchen;
 	}
 
-	public void setOpen(boolean open) {
-		this.open = open;
-	}
-
-	public Date getRegisterDate() {
-		return registerDate;
-	}
-
-	public void setRegisterDate(Date registerDate) {
-		this.registerDate = registerDate;
-	}
-
-	public Date getUpdate() {
-		return update;
-	}
-
-	public void setUpdate(Date update) {
-		this.update = update;
+	public void setKitchen(Kitchen kitchen) {
+		this.kitchen = kitchen;
 	}
 
 	@Override
