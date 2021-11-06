@@ -24,7 +24,7 @@ public class KitchenRegisterService {
 	public void remove(Long id) {
 
 		try {
-			kitchenRepository.remove(id);
+			kitchenRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntityNotFoundException(e.getMessage());
 		} catch (DataIntegrityViolationException e) {

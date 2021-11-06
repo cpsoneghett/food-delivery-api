@@ -35,7 +35,7 @@ public class KitchenController {
 
 	@GetMapping
 	public List<Kitchen> listAll() {
-		return kitchenRepository.listAll();
+		return kitchenRepository.findAll();
 	}
 
 	@GetMapping("/{id}")
@@ -43,9 +43,9 @@ public class KitchenController {
 
 		var kitchen = kitchenRepository.findById(id);
 
-		if (kitchen != null) {
+		if (kitchen.isPresent()) {
 
-			return ResponseEntity.ok(kitchen);
+			return ResponseEntity.ok(kitchen.get());
 		}
 
 		return ResponseEntity.notFound().build();
@@ -62,12 +62,12 @@ public class KitchenController {
 
 		var currentKitchen = kitchenRepository.findById(id);
 
-		if (currentKitchen != null) {
+		if (currentKitchen.isPresent()) {
 			BeanUtils.copyProperties(newKitchen, currentKitchen, "id");
 
-			kitchenRegisterService.save(currentKitchen);
+			kitchenRegisterService.save(currentKitchen.get());
 
-			return ResponseEntity.ok(currentKitchen);
+			return ResponseEntity.ok(currentKitchen.get());
 		}
 
 		return ResponseEntity.notFound().build();

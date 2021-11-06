@@ -34,14 +34,14 @@ public class RestaurantRegisterService {
 		try {
 			var currentRestaurant = restaurantRepository.findById(idRestaurant);
 
-			if (currentRestaurant == null)
+			if (currentRestaurant.isEmpty())
 				throw new EntityNotFoundException(String.format("Restaurant with id %d not found!!", idRestaurant));
 
 			validateKitchen(newRestaurant.getKitchen().getId());
 
-			BeanUtils.copyProperties(newRestaurant, currentRestaurant, "id");
+			BeanUtils.copyProperties(newRestaurant, currentRestaurant.get(), "id");
 
-			return restaurantRepository.save(currentRestaurant);
+			return restaurantRepository.save(currentRestaurant.get());
 
 		} catch (EntityNotFoundException e) {
 			throw new EntityNotFoundException(e.getMessage());
@@ -50,11 +50,9 @@ public class RestaurantRegisterService {
 	}
 
 	private Kitchen validateKitchen(Long kitchenId) {
-		var kitchen = kitchenRepository.findById(kitchenId);
 
-		if (kitchen == null)
-			throw new EntityNotFoundException(String.format("Kitchen with id %d not found!", kitchenId));
+		return kitchenRepository.findById(kitchenId).orElseThrow(
+				() -> new EntityNotFoundException(String.format("Kitchen with id %d not found!", kitchenId)));
 
-		return kitchen;
 	}
 }

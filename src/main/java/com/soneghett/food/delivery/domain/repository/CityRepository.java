@@ -3,9 +3,9 @@ package com.soneghett.food.delivery.domain.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.soneghett.food.delivery.domain.model.Kitchen;
+import com.soneghett.food.delivery.domain.model.City;
 
 @Repository
-public interface KitchenRepository extends JpaRepository<Kitchen, Long> {
+public interface CityRepository extends JpaRepository<City, Long> {
 
 }
