@@ -1,8 +1,5 @@
 package com.soneghett.food.delivery.api.controller;
 
-import static com.soneghett.food.delivery.infrastructure.repository.spec.RestaurantSpecs.withFreeDelivery;
-import static com.soneghett.food.delivery.infrastructure.repository.spec.RestaurantSpecs.withSimilarNames;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -46,6 +43,6 @@ public class TestController {
 	@GetMapping("/restaurants/free-delivery")
 	public List<Restaurant> getWithFreeDelivery(String name) {
 
-		return restaurantRepository.findAll(withFreeDelivery().and(withSimilarNames(name)));
+		return restaurantRepository.findWithFreeDelivery(name);
 	}
 }

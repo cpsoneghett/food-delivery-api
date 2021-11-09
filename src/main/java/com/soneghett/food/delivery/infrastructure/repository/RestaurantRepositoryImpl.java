@@ -1,5 +1,8 @@
 package com.soneghett.food.delivery.infrastructure.repository;
 
+import static com.soneghett.food.delivery.infrastructure.repository.spec.RestaurantSpecs.withFreeDelivery;
+import static com.soneghett.food.delivery.infrastructure.repository.spec.RestaurantSpecs.withSimilarNames;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,10 +14,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.Predicate;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.soneghett.food.delivery.domain.model.Restaurant;
+import com.soneghett.food.delivery.domain.repository.RestaurantRepository;
 import com.soneghett.food.delivery.domain.repository.RestaurantRepositoryQueries;
 
 @Repository
@@ -22,6 +28,10 @@ public class RestaurantRepositoryImpl implements RestaurantRepositoryQueries {
 
 	@PersistenceContext
 	private EntityManager em;
+
+	@Autowired
+	@Lazy
+	private RestaurantRepository restaurantRepository;
 
 	public List<Restaurant> find(String name, BigDecimal initialFreightRate, BigDecimal finalFreightRate) {
 
@@ -78,5 +88,11 @@ public class RestaurantRepositoryImpl implements RestaurantRepositoryQueries {
 		criteria.where(predicates.toArray(new Predicate[0]));
 
 		return em.createQuery(criteria).getResultList();
+	}
+
+	@Override
+	public List<Restaurant> findWithFreeDelivery(String name) {
+
+		return restaurantRepository.findAll(withFreeDelivery().and(withSimilarNames(name)));
 	}
 }
